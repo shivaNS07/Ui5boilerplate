@@ -1,0 +1,9 @@
+_schema-version: '2.0.0'
+ID: ui5boiler
+extends: ui5boiler
+
+modules:
+  - name: 'ui5boilerplate'
+    parameters:
+      html5-app-name: 'ui5boilerplate'
+      html5-app-display-name: 'ui5boilerplate'
