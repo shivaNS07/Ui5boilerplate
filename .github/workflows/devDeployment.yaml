@@ -23,7 +23,7 @@ jobs:
         run: npm config set package-lock false
       - name: Build MTA
         run: |
-          docker run -u root -v "$(pwd):/project" devxci/mbtci:latest mbt build -e dev.mtaext --mtar -p=cf -t ui5app.mtar
+          docker run -u root -v "$(pwd):/project" devxci/mbtci-alpine:latest mbt build -e dev.mtaext --mtar -p=cf -t ui5app.mtar
 
       - name: Upload Artifact
         uses: actions/upload-artifact@master
