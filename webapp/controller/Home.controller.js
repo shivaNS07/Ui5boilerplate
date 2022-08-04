@@ -6,14 +6,14 @@ sap.ui.define(['ui5boilerplate/controller/Base.controller'], (BaseController) =>
      * Press event handler for INTEGRTR logo
      */
     integrtrLogoPress() {
-      window.open('https://www.integrtr.com', '_blank');
+      window.open('https://www.integrtr.com', 'INTEGRTR');
     },
 
     /**
      * Press event handler for GitHub logo
      */
     githubLogoPress() {
-      window.open('https://github.com/integrtr/ui5-boilerplate', '_blank');
+      window.open('https://github.com/integrtr/ui5-boilerplate', 'GIT');
     },
   });
 });
