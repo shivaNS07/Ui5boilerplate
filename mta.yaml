@@ -46,10 +46,6 @@ modules:
             - ui5boilerplate.zip
           name: ui5boilerplate
           target-path: resources/
-        - artifacts:
-            - comchildcomponent.zip
-          name: comchildcomponent
-          target-path: resources/
   - name: ui5boilerplate
     type: html5
     path: myapp
@@ -85,12 +81,5 @@ resources:
       service: html5-apps-repo
       service-name: Ui5boilerplate-html5-app-host-service
       service-plan: app-host
-  - name: uaa_Ui5boilerplate
-    type: org.cloudfoundry.managed-service
-    parameters:
-      path: ./xs-security.json
-      service: xsuaa
-      service-name: Ui5boilerplate-xsuaa-service
-      service-plan: application
 parameters:
   deploy_mode: html5-repo
