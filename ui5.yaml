@@ -5,7 +5,7 @@ type: application
 resources:
   configuration:
     paths:
-      webapp: webapp
+      webapp: myapp/webapp
 framework:
   name: OpenUI5
   version: '1.90.1'
@@ -19,7 +19,7 @@ server:
       afterMiddleware: compression
       configuration:
         port: 35729
-        path: webapp
+        path: myapp/webapp
     - name: ui5-middleware-index
       afterMiddleware: compression
       configuration:
