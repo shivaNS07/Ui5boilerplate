@@ -22,8 +22,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Load NPM dependencies
         run: yarn
-      - name: Run ESLint check
-        run: yarn lint
       - name: Build UI5 Project
         run: yarn build
       - name: Build MTAR for CF Cloud
