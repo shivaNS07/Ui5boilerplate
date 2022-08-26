@@ -9,42 +9,26 @@ on:
       - master
 
 jobs:
-  build:
+  deploy:
+    name: Deployment
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js
+      - name: Checkout to repository
+        uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 12
-      - name: Install MTA Build Tool
-        run: npm install -g mbt
-      - name: Disable package-lock.json
-        run: npm config set package-lock false
-      - name: Build MTA
-        run: mbt build -p cf
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: mta
-          path: ./mta_archives/cap-github-actions_1.0.0.mtar
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: mta
-          path: ./
-      - name: Deploy to Cloud Foundry
-        uses: guerric-p/cf-cli-action@master
-        with:
-          cf_api: ${{ secrets.CF_API }}
-          cf_username: ${{ secrets.CF_USERNAME }}
-          cf_password: ${{ secrets.CF_PASSWORD }}
-          cf_org: ${{ secrets.CF_ORG }}
-          cf_space: ${{ secrets.CF_SPACE }}
-          command: deploy ./cap-github-actions_1.0.0.mtar -f
+          node-version: ${{ matrix.node-version }}
+      - name: Load NPM dependencies
+        run: yarn
+      - name: Run ESLint check
+        run: yarn lint
+      - name: Build UI5 Project
+        run: yarn build
+      - name: Build MTAR for CF Cloud
+        run: |
+          docker run -u root -v "$(pwd):/project" devxci/mbtci:latest mbt build -e dev.mtaext --mtar -p=cf -t ui5app.mtar
+      - name: Deploy to Neo Cloud
+        run: |
+          docker run -u root -v ${PWD}:/project ppiper/neo-cli:latest neo.sh deploy-mta --host ${{ secrets.NEO_HOST }} --account ${{ secrets.NEO_ACCOUNT }} --source /project/ui5app.mtar --synchronous --user ${{ secrets.NEO_USER }} --password ${{ secrets.NEO_PASSWORD }}
