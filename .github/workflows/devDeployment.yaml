@@ -24,9 +24,12 @@ jobs:
         run: yarn
       - name: Build UI5 Project
         run: yarn build
-      - name: Build MTAR for CF Cloud
-        run: |
-          docker run -u root -v "$(pwd):/project" devxci/mbtci:latest mbt build -e dev.mtaext --mtar -p=cf -t ui5app.mtar
-      - name: Deploy to Neo Cloud
-        run: |
-          docker run -u root -v ${PWD}:/project ppiper/neo-cli:latest neo.sh deploy-mta --host ${{ secrets.NEO_HOST }} --account ${{ secrets.NEO_ACCOUNT }} --source /project/ui5app.mtar --synchronous --user ${{ secrets.NEO_USER }} --password ${{ secrets.NEO_PASSWORD }}
+      - name: Deploy to Cloud Foundry
+         uses: guerric-p/cf-cli-action@master
+         with:
+           cf_api: ${{ secrets.CF_API }}
+           cf_username: ${{ secrets.CF_USERNAME }}
+           cf_password: ${{ secrets.CF_PASSWORD }}
+           cf_org: ${{ secrets.CF_ORG }}
+           cf_space: ${{ secrets.CF_SPACE }}
+           command: deploy ./boilerplate_1.0.0.mtar -f
