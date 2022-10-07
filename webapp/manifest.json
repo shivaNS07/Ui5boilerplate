@@ -1,7 +1,6 @@
 {
   "_version": "1.34.0",
   "sap.cloud": {
-    "public": true,
     "service": "cloud.boilerplate"
   },
   "sap.app": {
@@ -21,7 +20,8 @@
             "additionalParameters": "allowed"
           },
           "semanticObject": "boilerplate",
-          "action": "display"
+          "action": "display",
+          "titile": "boilerplate"
         }
       }
     }
