@@ -4,6 +4,9 @@
   "scripts": {
     "build": "npm run clean && npm run zip",
     "zip": "npx bestzip manifest-bundle.zip manifest.json && npx bestzip HTML5Module-content.zip *",
-    "clean": "npx rimraf HTML5Module-content.zip manifest-bundle.zip"
+    "clean": "rimraf resources mta_archives mta-op*"
+  },
+  "devDependencies": {
+    "rimraf": "3.0.0"
   }
 }

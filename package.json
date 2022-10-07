@@ -11,8 +11,9 @@
   ],
   "homepage": "",
   "scripts": {
+    "clean": "rimraf resources mta_archives mta-op*",
     "start": "ui5 serve -o",
-    "build": "ui5 build --clean-dest && mbt build",
+    "build": "ui5 build --clean-dest && mbt build -p cf",
     "build-all": "ui5 build -a --clean-dest && mbt build -p cf",
     "deploy:cf": "cross-var cf deploy mta_archives/boilerplate_1.0.0.mtar",
     "deploy": "run-s build deploy:cf"
@@ -45,7 +46,8 @@
     "ui5-middleware-index": "^0.1.1",
     "ui5-middleware-livereload": "^0.2.0",
     "ui5-middleware-livetranspile": "^0.1.9",
-    "ui5-task-transpile": "^0.1.7"
+    "ui5-task-transpile": "^0.1.7",
+    "rimraf": "3.0.0"
   },
   "ui5": {
     "dependencies": [
