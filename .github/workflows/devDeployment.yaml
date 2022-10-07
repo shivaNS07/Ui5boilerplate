@@ -24,6 +24,16 @@ jobs:
         run: yarn
       - name: Build UI5 Project
         run: yarn build
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: mta
+          path: ./mta_archives/boilerplate_1.0.0.mtar
+       - name: Download Artifact
+         uses: actions/download-artifact@master
+         with:
+          name: mta
+          path: ./    
       - name: Deploy to Cloud Foundry
         uses: guerric-p/cf-cli-action@master
         with:
