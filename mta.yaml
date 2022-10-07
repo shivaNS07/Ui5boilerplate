@@ -51,6 +51,7 @@ modules:
     type: html5
     path: dist
     build-parameters:
+      build-result: dist
       builder: custom
       commands:
         - npm run build
