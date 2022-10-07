@@ -47,7 +47,7 @@ modules:
             - HTML5Module.zip
           name: HTML5Module
           target-path: resources/
- - name: HTML5Module
+  - name: HTML5Module
     type: html5
     path: dist
     build-parameters:
@@ -64,11 +64,11 @@ resources:
         init_data:
           instance:
             destinations:
-            - Authentication: NoAuthentication
-              Name: ui5
-              ProxyType: Internet
-              Type: HTTP
-              URL: https://ui5.sap.com
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
             existing_destinations_policy: update
         version: 1.0.0
       service: destination
