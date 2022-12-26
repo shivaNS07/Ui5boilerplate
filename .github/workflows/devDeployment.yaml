@@ -1,4 +1,9 @@
-name: Deploy to Cloud Foundry HTML5 Managed Application Router
+To deploy an MTA (Multi-Target Application) to Cloud Foundry using a GitHub Actions workflow, you can use the cf deploy command instead of the cf push command. The cf deploy command allows you to deploy an MTA to Cloud Foundry by specifying the path to the MTA archive file (.mtar) and the name of the target space.
+
+Here is an example of how you might do this:
+
+Copy code
+name: Deploy MTA to Cloud Foundry
 
 on:
   push:
@@ -9,22 +14,22 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Cloud Foundry CLI
-        run: |
-          sudo apt-get update
-          echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
-          wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
-          sudo apt-get update
-          sudo apt-get install cf-cli
-      - name: Login to Cloud Foundry
-        env:
-          CF_API: ${{ secrets.CF_API }}
-          CF_USERNAME: ${{ secrets.CF_USERNAME }}
-          CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
-        run: |
-          cf api ${{ secrets.CF_API }}
-          cf login -u ${{ secrets.CF_USERNAME }} -p ${{ secrets.CF_PASSWORD }}
-      - name: Build and push application to Cloud Foundry HTML5 Managed Application Router
-        run: |
-          cf push -f manifest.yml --vars-file vars.yml
+    - uses: actions/checkout@v2
+    - name: Install Cloud Foundry CLI
+      run: |
+        sudo apt-get update
+        echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+        wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+        sudo apt-get update
+        sudo apt-get install cf-cli
+    - name: Login to Cloud Foundry
+      env:
+        CF_API: ${{ secrets.CF_API }}
+        CF_USERNAME: ${{ secrets.CF_USERNAME }}
+        CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
+      run: |
+        cf api $CF_API
+        cf login -u $CF_USERNAME -p $CF_PASSWORD
+    - name: Build and push application to Cloud Foundry
+      run: |
+        cf deploy mta.mtar -s ${{ secrets.CF_SPACE }}
