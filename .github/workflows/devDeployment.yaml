@@ -12,19 +12,11 @@ jobs:
           node-version: 14
       - run: npm install
       - run: npm run build
-      - uses: pivotal-cf/cf-cli@v1
+      - uses: SAP/cloud-mta-cf-deployment-action@v1
         with:
-          api: ${{ secrets.CF_API }}
-          username: ${{ secrets.CF_USERNAME }}
-          password: ${{ secrets.CF_PASSWORD }}
-          organization: ${{ secrets.CF_ORG }}
-          space: ${{ secrets.CF_SPACE }}
-          command: mta build
-      - uses: pivotal-cf/cf-cli@v1
-        with:
-          api: ${{ secrets.CF_API }}
-          username: ${{ secrets.CF_USERNAME }}
-          password: ${{ secrets.CF_PASSWORD }}
-          organization: ${{ secrets.CF_ORG }}
-          space: ${{ secrets.CF_SPACE }}
-          command: mta deploy
+          cf-api: ${{ secrets.CF_API }}
+          cf-user: ${{ secrets.CF_USERNAME }}
+          cf-password: ${{ secrets.CF_PASSWORD }}
+          cf-org: ${{ secrets.CF_ORG }}
+          cf-space: ${{ secrets.CF_SPACE }}
+          mta-file: my-mta.mtar
