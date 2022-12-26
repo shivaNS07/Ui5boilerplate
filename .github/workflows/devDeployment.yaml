@@ -12,12 +12,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Cloud Foundry CLI
         run: |
-          chocolatey update
-          chocolatey install -y wget
+          apt-get update
+          apt-get install -y wget
           wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | apt-key add -
           echo "deb https://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/sources.list.d/cloudfoundry-cli.list
-          chocolatey update
-          chocolatey install -y cf-cli
+          apt-get update
+          apt-get install -y cf-cli
       - name: Login to Cloud Foundry
         env:
           CF_API: ${{ secrets.CF_API }}
