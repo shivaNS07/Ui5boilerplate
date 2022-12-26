@@ -23,8 +23,8 @@ jobs:
           CF_USERNAME: ${{ secrets.CF_USERNAME }}
           CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
         run: |
-          cf api $CF_API
-          cf login -u $CF_USERNAME -p $CF_PASSWORD
+          cf api ${{ secrets.CF_API }}
+          cf login -u ${{ secrets.CF_USERNAME }} -p ${{ secrets.CF_PASSWORD }}
       - name: Build and push application to Cloud Foundry
         run: |
-          cf deploy mta_archives\boilerplate_1.0.0.mtar -s my-space
+          cf deploy mta_archives\boilerplate_1.0.0.mtar -s ${{ secrets.CF_SPACE }}
