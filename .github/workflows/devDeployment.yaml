@@ -1,6 +1,9 @@
-name: Build and Deploy MTA
+name: Deploy MTA to Cloud Foundry
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build-and-deploy:
