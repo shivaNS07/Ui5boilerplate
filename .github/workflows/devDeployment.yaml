@@ -27,4 +27,4 @@ jobs:
           cf login -u $CF_USERNAME -p $CF_PASSWORD
       - name: Build and push application to Cloud Foundry
         run: |
-          cf deploy mta.mtar -s my-space
+          cf deploy mta_archives\boilerplate_1.0.0.mtar -s my-space
