@@ -1,45 +1,31 @@
-# Build Multitarget Application & Deploy it to Cloud Foundry
-name: Build MTA & Deploy it to CF
+name: Deploy to Cloud Foundry HTML5 Managed Application Router
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
     branches:
       - master
 
 jobs:
-  deploy:
-    name: Deployment
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout to repository
-        uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Load NPM dependencies
-        run: yarn
-      - name: Build UI5 Project
-        run: yarn build
-      - name: Upload Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: mta
-          path: ./mta_archives/boilerplate_1.0.0.mtar
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: mta
-          path: ./
-      - name: Deploy to Cloud Foundry
-        uses: guerric-p/cf-cli-action@master
-        with:
-          cf_api: ${{ secrets.CF_API }}
-          cf_username: ${{ secrets.CF_USERNAME }}
-          cf_password: ${{ secrets.CF_PASSWORD }}
-          cf_org: ${{ secrets.CF_ORG }}
-          cf_space: ${{ secrets.CF_SPACE }}
-          command: deploy ./mta_archives/boilerplate_1.0.0.mtar -f
+      - uses: actions/checkout@v2
+      - name: Install Cloud Foundry CLI
+        run: |
+          apt-get update
+          apt-get install -y wget
+          wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | apt-key add -
+          echo "deb https://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+          apt-get update
+          apt-get install -y cf-cli
+      - name: Login to Cloud Foundry
+        env:
+          CF_API: ${{ secrets.CF_API }}
+          CF_USERNAME: ${{ secrets.CF_USERNAME }}
+          CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
+        run: |
+          cf api $CF_API
+          cf login -u $CF_USERNAME -p $CF_PASSWORD
+      - name: Build and push application to Cloud Foundry HTML5 Managed Application Router
+        run: |
+          cf push -f manifest.yml --vars-file vars.yml
