@@ -17,6 +17,8 @@ jobs:
           wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
           sudo apt-get update
           sudo apt-get install cf-cli
+      - name: Install deploy plugin
+        run: cf install-plugin -r CF-Community "deployment-tracker"
       - name: Login to Cloud Foundry
         env:
           CF_API: ${{ secrets.CF_API }}
