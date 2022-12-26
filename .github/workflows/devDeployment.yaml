@@ -12,7 +12,7 @@ jobs:
           node-version: 14
       - run: npm install
       - run: npm run build
-      - uses: pivotal-cf/cf-cli@1.0.1
+      - uses: pivotal-cf/cf-cli@v1
         with:
           api: ${{ secrets.CF_API }}
           username: ${{ secrets.CF_USERNAME }}
@@ -20,7 +20,7 @@ jobs:
           organization: ${{ secrets.CF_ORG }}
           space: ${{ secrets.CF_SPACE }}
           command: mta build
-      - uses: pivotal-cf/cf-cli@1.0.1
+      - uses: pivotal-cf/cf-cli@v1
         with:
           api: ${{ secrets.CF_API }}
           username: ${{ secrets.CF_USERNAME }}
