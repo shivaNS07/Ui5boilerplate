@@ -1,9 +1,6 @@
-name: Deploy MTA to Cloud Foundry
+name: Build and Deploy MTA
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
   build-and-deploy:
@@ -15,11 +12,19 @@ jobs:
           node-version: 14
       - run: npm install
       - run: npm run build
-      - uses: cloudfoundry-community/cf-html5-deploy-action@v1
+      - uses: cloudfoundry/cf-cli-action@v1
         with:
           api: ${{ secrets.CF_API }}
           username: ${{ secrets.CF_USERNAME }}
           password: ${{ secrets.CF_PASSWORD }}
           organization: ${{ secrets.CF_ORG }}
           space: ${{ secrets.CF_SPACE }}
-          appname: my-mta-app
+          command: mta build
+      - uses: cloudfoundry/cf-cli-action@v1
+        with:
+          api: ${{ secrets.CF_API }}
+          username: ${{ secrets.CF_USERNAME }}
+          password: ${{ secrets.CF_PASSWORD }}
+          organization: ${{ secrets.CF_ORG }}
+          space: ${{ secrets.CF_SPACE }}
+          command: mta deploy
