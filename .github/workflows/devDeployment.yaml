@@ -20,6 +20,6 @@ jobs:
           api: ${{ secrets.CF_API }}
           username: ${{ secrets.CF_USERNAME }}
           password: ${{ secrets.CF_PASSWORD }}
-          organization: ${{ CF_ORG }}
-          space: ${{ CF_SPACE }}
+          organization: ${{ secrets.CF_ORG }}
+          space: ${{ secrets.CF_SPACE }}
           appname: my-mta-app
