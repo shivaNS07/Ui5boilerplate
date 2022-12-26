@@ -1,32 +1,22 @@
-name: Deploy MTA to Cloud Foundry
+name: Build and Deploy MTA
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Cloud Foundry CLI
-        run: |
-          sudo apt-get update
-          echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
-          wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
-          sudo apt-get update
-          sudo apt-get install cf-cli
-      - name: Install deploy plugin
-        run: echo "y" | cf install-plugin -r CF-Community "Cloud Deployment Plugin"
-      - name: Login to Cloud Foundry
-        env:
-          CF_API: ${{ secrets.CF_API }}
-          CF_USERNAME: ${{ secrets.CF_USERNAME }}
-          CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
-        run: |
-          cf api ${{ secrets.CF_API }}
-          cf login -u ${{ secrets.CF_USERNAME }} -p ${{ secrets.CF_PASSWORD }}
-      - name: Build and push application to Cloud Foundry
-        run: |
-          cf deploy mta_archives\boilerplate_1.0.0.mtar -s ${{ secrets.CF_SPACE }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: npm install
+      - run: npm run build
+      - uses: cloudfoundry-community/cf-html5-deploy-action@v1
+        with:
+          api: ${{ secrets.CF_API }}
+          username: ${{ secrets.CF_USERNAME }}
+          password: ${{ secrets.CF_PASSWORD }}
+          organization: ${{ CF_ORG }}
+          space: ${{ CF_SPACE }}
+          appname: my-mta-app
