@@ -18,7 +18,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install cf-cli
       - name: Install deploy plugin
-        run: cf install-plugin -r CF-Community "deployment-tracker"
+        run: cf install-plugin -r CF-Community "Cloud Deployment Plugin"
       - name: Login to Cloud Foundry
         env:
           CF_API: ${{ secrets.CF_API }}
